@@ -23,29 +23,29 @@
 
 - name: Remove previous xfce4 sessions
   become: no
-  file: path="/home/{{remote_user}}/.cache/sessions state=absent"
+  file: path="/home/{{ansible_user}}/.cache/sessions state=absent"
 
 - name: Create xfce4 configuration directory in user home
   become: no
-  file: path="/home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml" state=directory owner="{{remote_user}}" group="{{remote_user}}" mode='u=rw'
+  file: path="/home/{{ansible_user}}/.config/xfce4/xfconf/xfce-perchannel-xml" state=directory owner="{{ansible_user}}" group="{{ansible_user}}" mode='u=rw'
 
 - name: Copy new xfce4 configuration file
   become: no
-  shell: cp /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml /home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
+  shell: cp /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml /home/{{ansible_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
 
 - name: Changing xfce4 configuration file ownership
   become: no
-  file: path="/home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml" owner="{{remote_user}}" group="{{remote_user}}" mode='u=rw'
+  file: path="/home/{{ansible_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml" owner="{{ansible_user}}" group="{{ansible_user}}" mode='u=rw'
 
 - name: Copy xfce4 configuration file patch
   become: no
-  copy: src=xfce/xfce4-session.xml.patch dest=/tmp/ owner="{{remote_user}}" group="{{remote_user}}" mode='u=rw'
+  copy: src=xfce/xfce4-session.xml.patch dest=/tmp/ owner="{{ansible_user}}" group="{{ansible_user}}" mode='u=rw'
 
 - name: Apply patch on xfce4 configuration file
   become: no
   patch: remote_src=True
     src=/tmp/xfce4-session.xml.patch
-    dest="/home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml"
+    dest="/home/{{ansible_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml"
 
 - name: Hide xfce-wm settings shortcut
   become: yes
