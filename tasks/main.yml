@@ -27,7 +27,7 @@
 
 - name: Create xfce4 configuration directory in user home
   become: no
-  file: path="/home/{{ansible_user}}/.config/xfce4/xfconf/xfce-perchannel-xml" state=directory owner="{{ansible_user}}" group="{{ansible_user}}" mode='u=rw'
+  file: path="/home/{{ansible_user}}/.config/xfce4/xfconf/xfce-perchannel-xml" state=directory owner="{{ansible_user}}" group="{{ansible_user}}" mode='u=rw' recurse=yes
 
 - name: Copy new xfce4 configuration file
   become: no
