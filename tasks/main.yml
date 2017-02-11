@@ -15,7 +15,7 @@
 
 - name: Copy the autostart scripts
   become: no
-  copy: src="autostart/{{item}}" dest="/home/{{ansible_user}}/.config/autostart/" owner="{{remote_user}}" group="{{remote_user}}" mode='u=rw'
+  copy: src="autostart/{{item}}" dest="/home/{{ansible_user}}/.config/autostart/" owner="{{ansible_user}}" group="{{ansible_user}}" mode='u=rw'
   with_items:
    - compton.desktop
    - i3.desktop
