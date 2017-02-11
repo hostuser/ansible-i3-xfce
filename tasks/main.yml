@@ -23,7 +23,7 @@
 
 - name: Remove previous xfce4 sessions
   become: no
-  file: path="/home/{{ansible_user}}/.cache/sessions state=absent"
+  file: path="/home/{{ansible_user}}/.cache/sessions" state=absent
 
 - name: Create xfce4 configuration directory in user home
   become: no
