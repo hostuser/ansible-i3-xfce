@@ -2,6 +2,7 @@
 # tasks file for ansible-i3-xfce
 
 - name: Install i3-wm package using apt
+  become: yes
   apt: pkg={{item}} force=yes state=installed
   with_items:
    - xfdesktop4
@@ -13,6 +14,7 @@
    - compton
 
 - name: Copy the autostart scripts
+  become: no
   copy: src=autostart/{{item}} dest=/home/{{remote_user}}/.config/autostart/ owner={{remote_user}} group={{remote_user}} mode='u=rw'
   with_items:
    - compton.desktop
@@ -20,29 +22,31 @@
    - xfce4-panel.desktop
 
 - name: Remove previous xfce4 sessions
+  become: no
   file: path=/home/{{remote_user}}/.cache/sessions state=absent
 
 - name: Create xfce4 configuration directory in user home
+  become: no
   file: path=/home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml state=directory owner={{remote_user}} group={{remote_user}} mode='u=rw'
 
 - name: Copy new xfce4 configuration file
+  become: no
   shell: cp /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml /home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
 
 - name: Changing xfce4 configuration file ownership
+  become: no
   file: path=/home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml owner={{remote_user}} group={{remote_user}} mode='u=rw'
 
-- name: Create tmp folder
-  file: path=/tmp state=directory
-
 - name: Copy xfce4 configuration file patch
+  become: no
   copy: src=xfce/xfce4-session.xml.patch dest=/tmp/ owner={{remote_user}} group={{remote_user}} mode='u=rw'
 
 - name: Apply patch on xfce4 configuration file
+  become: no
   patch: remote_src=True
     src=/tmp/xfce4-session.xml.patch
     dest=/home/{{remote_user}}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
 
 - name: Hide xfce-wm settings shortcut
+  become: yes
   lineinfile: dest=/usr/share/applications/xfce-wm-settings.desktop state=present line="Hidden=true"
-ame: Change ownership of ~/.config directory
-  file: path=/home/{{remote_user}}/.config recurse='yes' state='directory' owner={{remote_user}} group={{remote_user}} mode='u=rwX'
